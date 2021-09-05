@@ -72,8 +72,8 @@
           {
             "browserTarget": "ideationapp:build",
             "ssl": true,
-            "sslKey": "src/ssl/server.key",
-            "sslCert": "src/ssl/server.crt",
+            "sslKey": "ssl/server.key",
+            "sslCert": "ssl/server.crt",
           },
           "configurations": {
             "production": {

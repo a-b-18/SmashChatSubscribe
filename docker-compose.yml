@@ -1,0 +1,34 @@
+version: '3.4'
+
+services:
+    site2signoff:
+        container_name: smash-chat-subscribe
+        image: alex2222/smash-chat-subscribe
+        restart: "unless-stopped"
+        build:
+            context: .
+            dockerfile: API/Dockerfile
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+          - ASPNETCORE_URLS=https://+:443;http://+:80
+        ports:
+          - "80:80"
+          - "443:443"
+        volumes:
+          - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+          - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+        networks:
+            test:
+    sql-server-db:
+        container_name: sql-server-db
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        ports:
+            - "1433:1433"
+        environment:
+            SA_PASSWORD: "Super_Duper_Password"
+            ACCEPT_EULA: "Y"
+        networks:
+            test:
+networks:
+    test:
+        driver: bridge
