@@ -71,6 +71,10 @@ namespace API
             
             app.UseAuthorization();
 
+            // Use static Angular files
+            // app.UseDefaultFiles();
+            // app.UseStaticFiles();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
