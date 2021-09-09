@@ -454,3 +454,8 @@ $RECYCLE.BIN/
 !.vscode/extensions.json
 
 appsettings.json
+API/obj/API.csproj.nuget.dgspec.json
+API/obj/API.csproj.nuget.g.props
+API/obj/API.csproj.nuget.g.targets
+API/obj/project.assets.json
+API/obj/project.nuget.cache
