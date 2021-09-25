@@ -9,9 +9,10 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   title = 'Smash Chat & Subscribe!';
   users: any;
+  pdfSrc = "../files/test.pdf";
 
   constructor(private http: HttpClient) {}
-  
+
   ngOnInit() {
     this.getUsers();
   }
