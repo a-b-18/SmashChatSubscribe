@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using API.Data;
@@ -47,7 +48,7 @@ namespace API.Controllers
             return doc;
         }
 
-        [HttpGet("read{doc}")]
+        [HttpPost("read")]
         public async Task<ActionResult<UploadDto>> Read(DocDto doc)
         {
             // Check if DocDto exists in dbContext
@@ -56,6 +57,28 @@ namespace API.Controllers
             // Read AppBlob from dbContext
             var readDb = await _context.Blob
                 .SingleOrDefaultAsync(x => x.FileName == doc.FileName);
+
+            string pdflocation = "C:\\Users\\alexb\\OneDrive\\Desktop\\";
+            string fileName = readDb.FileName + ".pdf";
+
+            // parse byte into ASCII and remove blob format header
+            var base64String = Encoding.ASCII.GetString(readDb.FileData).Remove(0,28);
+
+            int mod4 = base64String.Length % 4;
+
+            // mod4 will be greater than 0 if the base 64 string is corrupted
+            if (mod4 > 0)
+            {
+                base64String += new string('=', 4 - mod4);
+            }
+            
+            pdflocation = pdflocation + fileName;
+            byte[] data = Convert.FromBase64String(base64String);
+
+            using (FileStream stream = System.IO.File.Create(pdflocation))
+            {
+                stream.Write(data, 0, data.Length);
+            }
 
             var readJson = new UploadDto
             {
