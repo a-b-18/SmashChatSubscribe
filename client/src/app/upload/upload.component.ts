@@ -17,27 +17,38 @@ export class UploadComponent implements OnInit {
 
   upload() {
 
-    const reader = new FileReader();
+    // iterate through loaded files
+    for (let file in this.files){
+      const reader = new FileReader();
 
-    // FileReader has an onload event that you handle when it has loaded data
-    reader.onload = (e: any) => {
-      const data = e.target.result as any;
-      console.log(data);
+      // FileReader has an onload event that you handle when it has loaded data
+      reader.onload = (e: any) => {
 
-      this.model.filename = "a pdf filen";
-      this.model.filedata = data;
-      this.model.uploadedby = "alex";
+        // store contents of blob
+        const data = e.target.result as any;
 
-      this.documentService.upload(this.model).subscribe(response => {
-        console.log(response);
-      }, error => {
-        console.log(error);
-      })
+        // regex split blob into header/data
+        var headerString = /(.+),/.exec(data)[0];
+        var dataString = /,(.+)/.exec(data)[1];
 
+        // construct model to send to API
+        this.model.filename = this.files[file]["name"];
+        this.model.filedata = dataString;
+        this.model.fileheader = headerString;
+        this.model.uploadedby = "alex";
+
+        // send model via documentService
+        this.documentService.upload(this.model).subscribe(response => {
+          console.log(response);
+        }, error => {
+          console.log(error);
+        })
+
+      };
+
+      // kick off the onload handler above
+        reader.readAsDataURL(this.files[file]);
     };
-
-    // this will kick off the onload handler above
-    reader.readAsDataURL(this.files[0]);
   }
 
   files: File[] = [];

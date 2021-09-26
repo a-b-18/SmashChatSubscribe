@@ -36,7 +36,8 @@ namespace API.Controllers
             var upload = new AppBlob
             {
                 FileName = uploadDto.FileName,
-                FileData = Encoding.ASCII.GetBytes(uploadDto.FileData),
+                FileData = Convert.FromBase64String(uploadDto.FileData),
+                FileHeader = uploadDto.FileHeader,
                 UploadedBy = uploadDto.UploadedBy.ToLower(),
             };
 
@@ -56,34 +57,23 @@ namespace API.Controllers
 
             // Read AppBlob from dbContext
             var readDb = await _context.Blob
-                .SingleOrDefaultAsync(x => x.FileName == doc.FileName);
-
-            string pdflocation = "C:\\Users\\alexb\\OneDrive\\Desktop\\";
-            string fileName = readDb.FileName + ".pdf";
-
-            // parse byte into ASCII and remove blob format header
-            var base64String = Encoding.ASCII.GetString(readDb.FileData).Remove(0,28);
-
-            int mod4 = base64String.Length % 4;
-
-            // mod4 will be greater than 0 if the base 64 string is corrupted
-            if (mod4 > 0)
-            {
-                base64String += new string('=', 4 - mod4);
-            }
+                .FirstOrDefaultAsync(x => x.FileName == doc.FileName);
             
-            pdflocation = pdflocation + fileName;
-            byte[] data = Convert.FromBase64String(base64String);
 
-            using (FileStream stream = System.IO.File.Create(pdflocation))
+            // Use below to download file
+            string fileLocation = "C:\\Users\\alexb\\Documents\\";
+            string fileName = readDb.FileName;
+            fileLocation = fileLocation + fileName;
+            using (FileStream stream = System.IO.File.Create(fileLocation))
             {
-                stream.Write(data, 0, data.Length);
+                stream.Write(readDb.FileData, 0, readDb.FileData.Length);
             }
 
             var readJson = new UploadDto
             {
                 FileName = readDb.FileName,
                 FileData = Encoding.ASCII.GetString(readDb.FileData),
+                FileHeader = readDb.FileHeader,
                 UploadedBy = readDb.UploadedBy
             };
 
