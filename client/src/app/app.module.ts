@@ -10,13 +10,16 @@ import { NavComponent } from './nav/nav.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
+import { UploadComponent } from './upload/upload.component';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavComponent,
     HomeComponent,
-    RegisterComponent
+    RegisterComponent,
+    UploadComponent
   ],
   imports: [
     BrowserModule,
@@ -24,6 +27,7 @@ import { RegisterComponent } from './register/register.component';
     HttpClientModule,
     BrowserAnimationsModule,
     FormsModule,
+    NgxDropzoneModule,
     BsDropdownModule.forRoot()
   ],
   providers: [],
