@@ -9,7 +9,7 @@ import { ReplaySubject } from 'rxjs';
 })
 export class DocumentService {
 
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = 'https://192.168.1.102:5001/api/';
   private currentUserSource = new ReplaySubject<Document>(1);
   currentUser$ = this.currentUserSource.asObservable();
 

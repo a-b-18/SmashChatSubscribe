@@ -44,8 +44,7 @@ namespace API
                                 {
                                     builder.AllowAnyHeader();
                                     builder.AllowAnyMethod();
-                                    builder.WithOrigins("http://localhost:4200",
-                                                        "https://localhost:4200");
+                                    builder.AllowAnyOrigin();
                                 });
             });
             services.AddControllers();
