@@ -10,6 +10,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 export class UploadComponent implements OnInit {
   uploadComplete: Boolean = false;
   model: any = {};
+  files: File[] = [];
 
   constructor(private documentService: DocumentService) { }
 
@@ -52,8 +53,6 @@ export class UploadComponent implements OnInit {
         reader.readAsDataURL(this.files[file]);
     };
   }
-
-  files: File[] = [];
 
   onSelect(event) {
     console.log(this.files);

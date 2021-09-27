@@ -41,6 +41,10 @@ export class AccountService {
     this.currentUserSource.next(user);
   }
 
+  getCurrentUser(){
+    return JSON.parse(localStorage.getItem('user'))["username"];
+  }
+
   logout() {
     localStorage.removeItem('user');
     this.currentUserSource.next(null);

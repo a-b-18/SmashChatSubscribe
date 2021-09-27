@@ -49,6 +49,27 @@ namespace API.Controllers
             return doc;
         }
 
+        [HttpPost("list")]
+        public async Task<ActionResult<DocDto>> List(DocDto doc)
+        {
+            // Check if DocDto exists in dbContext
+            if (!await DocExists(doc)) return BadRequest("File does not exist.");
+
+            // Read AppBlob from dbContext 
+            // TODO: Figure out how to query list.
+            var readDb = await _context.Blob
+                .SingleOrDefaultAsync(x => x.UploadedBy == doc.UploadedBy);
+
+            var readJson = new DocDto
+            {
+                FileList = new string[] {readDb.FileName},
+            };
+
+            // Return doc
+            return readJson;
+        }
+
+
         [HttpPost("read")]
         public async Task<ActionResult<UploadDto>> Read(DocDto doc)
         {
@@ -59,20 +80,19 @@ namespace API.Controllers
             var readDb = await _context.Blob
                 .FirstOrDefaultAsync(x => x.FileName == doc.FileName);
             
-
             // Use below to download file
-            string fileLocation = "C:\\Users\\alexb\\Documents\\";
-            string fileName = readDb.FileName;
-            fileLocation = fileLocation + fileName;
-            using (FileStream stream = System.IO.File.Create(fileLocation))
-            {
-                stream.Write(readDb.FileData, 0, readDb.FileData.Length);
-            }
+            // string fileLocation = "C:\\Users\\alexb\\Documents\\";
+            // string fileName = readDb.FileName;
+            // fileLocation = fileLocation + fileName;
+            // using (FileStream stream = System.IO.File.Create(fileLocation))
+            // {
+            //     stream.Write(readDb.FileData, 0, readDb.FileData.Length);
+            // }
 
             var readJson = new UploadDto
             {
                 FileName = readDb.FileName,
-                FileData = Encoding.ASCII.GetString(readDb.FileData),
+                FileData = Convert.ToBase64String(readDb.FileData),
                 FileHeader = readDb.FileHeader,
                 UploadedBy = readDb.UploadedBy
             };

@@ -10,6 +10,7 @@ import { User } from '../_models/user';
 })
 export class NavComponent implements OnInit {
   model: any = {}
+  userName = this.accountService.getCurrentUser();
 
   constructor(public accountService: AccountService) { }
 

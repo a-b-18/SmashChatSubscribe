@@ -1,5 +1,6 @@
 export interface Document {
   fileName: string;
-  FileData: string;
+  fileHeader: string,
+  fileData: string,
   uploadedBy: string;
 }

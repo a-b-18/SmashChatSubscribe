@@ -19,8 +19,17 @@ export class DocumentService {
     return this.http.post(this.baseUrl + 'document/upload', model).pipe(
       map((doc: Document) => {
         if (doc) {
-          localStorage.setItem('doc', JSON.stringify(doc));
-          this.currentUserSource.next(doc);
+          // Handle upload response
+        }
+      })
+    )
+  }
+
+  view(model: any) {
+    return this.http.post(this.baseUrl + 'document/read', model).pipe(
+      map((doc: Document) => {
+        if (doc) {
+          return doc;
         }
       })
     )

@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { UploadComponent } from './upload/upload.component';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { ViewerComponent } from './viewer/viewer.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     NavComponent,
     HomeComponent,
     RegisterComponent,
-    UploadComponent
+    UploadComponent,
+    ViewerComponent
   ],
   imports: [
     BrowserModule,
