@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
 using API.DTOs;
@@ -49,24 +50,24 @@ namespace API.Controllers
             return doc;
         }
 
-        [HttpPost("list")]
-        public async Task<ActionResult<DocDto>> List(DocDto doc)
+        [HttpGet("list{user}")]
+        public async Task<ActionResult> List(string user)
         {
-            // Check if DocDto exists in dbContext
-            if (!await DocExists(doc)) return BadRequest("File does not exist.");
-
-            // Read AppBlob from dbContext 
-            // TODO: Figure out how to query list.
+            // Return results from dbContext where UploadedBy is equal to user
             var readDb = await _context.Blob
-                .SingleOrDefaultAsync(x => x.UploadedBy == doc.UploadedBy);
+                .Where(x => x.UploadedBy == user)
+                .ToListAsync();
+            
+            // Store results for FileName and UploadedBy in DocDto response
+            var response = readDb.Select(
+                file => new DocDto
+                {
+                    FileName = file.FileName,
+                    UploadedBy = file.UploadedBy
+                });
 
-            var readJson = new DocDto
-            {
-                FileList = new string[] {readDb.FileName},
-            };
-
-            // Return doc
-            return readJson;
+            // Return response
+            return Ok(response);
         }
 
 
