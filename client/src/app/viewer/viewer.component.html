@@ -1,2 +1,6 @@
 <p>viewer works!</p>
+<h1>Your File List:</h1>
+<div *ngFor="let file of fileList">
+  <button (click)="selectedFile = file; view();">{{ file }}</button>
+</div>
 <img *ngIf="imageExists" src="{{ imageSrc }}">

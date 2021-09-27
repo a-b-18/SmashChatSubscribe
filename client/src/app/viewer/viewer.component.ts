@@ -11,19 +11,35 @@ export class ViewerComponent implements OnInit {
   model: any = {};
   imageSrc: string = "";
   fileHeader: string = "";
+  fileList: string [] = [];
+  selectedFile: string = "";
   viewModel: any = {};
   imageExists: boolean = false;
-  userName = this.accountService.getCurrentUser();
+  userName: string = "";
 
   constructor(private documentService: DocumentService, public accountService: AccountService) { }
 
   ngOnInit(): void {
+    this.userName = this.accountService.getCurrentUser();
     this.view();
+    this.list();
+  }
+
+  list() {
+
+    // send model via documentService
+    this.documentService.list(this.userName).subscribe(response => {
+      for (var i in response) {
+        this.fileList.push(response[i]["fileName"]);
+      }
+    }, error => {
+      console.log(error);
+    })
   }
 
   view() {
     // construct model to send to API
-    this.model.filename = "20190211_105614.jpg";
+    this.model.filename = this.selectedFile;
     this.model.uploadedby = this.userName;
 
     // send model via documentService

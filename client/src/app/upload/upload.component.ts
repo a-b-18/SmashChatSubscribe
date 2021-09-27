@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DocumentService } from '../_services/document.service';
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { AccountService } from '../_services/account.service';
 
 @Component({
   selector: 'app-upload',
@@ -12,7 +13,7 @@ export class UploadComponent implements OnInit {
   model: any = {};
   files: File[] = [];
 
-  constructor(private documentService: DocumentService) { }
+  constructor(private documentService: DocumentService, public accountService: AccountService) { }
 
   ngOnInit(): void {
   }
@@ -37,7 +38,7 @@ export class UploadComponent implements OnInit {
         this.model.filename = this.files[file]["name"];
         this.model.filedata = dataString;
         this.model.fileheader = headerString;
-        this.model.uploadedby = "alex";
+        this.model.uploadedby = this.accountService.getCurrentUser();
 
         // send model via documentService
         this.documentService.upload(this.model).subscribe(response => {

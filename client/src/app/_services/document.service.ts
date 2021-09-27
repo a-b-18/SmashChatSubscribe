@@ -25,6 +25,12 @@ export class DocumentService {
     )
   }
 
+  list(user: any) {
+    return this.http.get(this.baseUrl + 'document/list' + user).pipe(
+
+    )
+  }
+
   view(model: any) {
     return this.http.post(this.baseUrl + 'document/read', model).pipe(
       map((doc: Document) => {

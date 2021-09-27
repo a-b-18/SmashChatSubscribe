@@ -76,9 +76,9 @@ namespace API.Controllers
         {
             // Check if DocDto exists in dbContext
             if (!await DocExists(doc)) return BadRequest("File does not exist.");
-
             // Read AppBlob from dbContext
             var readDb = await _context.Blob
+                .Where(x => x.UploadedBy == doc.UploadedBy)
                 .FirstOrDefaultAsync(x => x.FileName == doc.FileName);
             
             // Use below to download file
@@ -104,10 +104,10 @@ namespace API.Controllers
 
         private async Task<bool> DocExists(DocDto uploadDto)
         {
-            bool FileExists = await _context.Blob.AnyAsync(ECKeyXmlFormat => ECKeyXmlFormat.FileName == uploadDto.FileName);
-            bool UserExists = await _context.Blob.AnyAsync(ECKeyXmlFormat => ECKeyXmlFormat.UploadedBy == uploadDto.UploadedBy);
+            bool FileExists = await _context.Blob.AnyAsync(ECKeyXmlFormat => 
+                ECKeyXmlFormat.FileName + ECKeyXmlFormat.UploadedBy == uploadDto.FileName + uploadDto.UploadedBy);
 
-            return FileExists && UserExists;
+            return FileExists;
         }
 
     }

@@ -42,6 +42,9 @@ export class AccountService {
   }
 
   getCurrentUser(){
+    if (localStorage.getItem("user") === null){
+      return "";
+    }
     return JSON.parse(localStorage.getItem('user'))["username"];
   }
 
