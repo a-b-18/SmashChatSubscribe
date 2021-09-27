@@ -8,6 +8,7 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
   styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {
+  uploadComplete: Boolean = false;
   model: any = {};
 
   constructor(private documentService: DocumentService) { }
@@ -40,6 +41,7 @@ export class UploadComponent implements OnInit {
         // send model via documentService
         this.documentService.upload(this.model).subscribe(response => {
           console.log(response);
+          this.uploadComplete = true;
         }, error => {
           console.log(error);
         })
