@@ -1,21 +1,21 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">Smash Chat & Subscribe</a>
+        <a class="navbar-brand" href="#">Beazy File Repo</a>
 
         <ul class="navbar-nav mr-auto" *ngIf="accountService.currentUser$ | async">
-            <li class="nav-item">
-                <a class="nav-link" href="#">Matches</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Lists</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Messages</a>
-            </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/home">Home</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" routerLink="/viewer">View Files</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" routerLink="/upload">Upload</a>
+          </li>
         </ul>
 
         <div class="dropdown" *ngIf="accountService.currentUser$ | async" dropdown>
-            <a class="dropdown-toggle text-light" dropdownToggle>Welcome {{ userName }}</a>
+            <a class="dropdown-toggle text-light" dropdownToggle>Welcome {{accountService.currentUser$["source"]["_events"][0]["username"]}}</a>
             <div class="dropdown-menu mt-3" *dropdownMenu>
                 <a class="dropdown-item">Edit Profile</a>
                 <div class="dropdown-divider"></div>
