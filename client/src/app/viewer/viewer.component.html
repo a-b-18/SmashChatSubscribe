@@ -3,4 +3,4 @@
 <div *ngFor="let file of fileList">
   <button (click)="selectedFile = file; view();">{{ file }}</button>
 </div>
-<img *ngIf="imageExists" src="{{ imageSrc }}">
+<iframe *ngIf="false" id="viewer" src="{{ this.blobUrl }}">

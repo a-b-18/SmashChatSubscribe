@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../_services/account.service';
 import { DocumentService } from '../_services/document.service';
-
+import { base64StringToBlob, createObjectURL } from 'blob-util';
 @Component({
   selector: 'app-viewer',
   templateUrl: './viewer.component.html',
@@ -16,6 +16,7 @@ export class ViewerComponent implements OnInit {
   viewModel: any = {};
   imageExists: boolean = false;
   userName: string = "";
+  blobUrl: string = "";
 
   constructor(private documentService: DocumentService, public accountService: AccountService) { }
 
@@ -44,19 +45,21 @@ export class ViewerComponent implements OnInit {
 
     // send model via documentService
     this.documentService.view(this.model).subscribe(response => {
-      console.log(response);
-      this.imageSrc = response.fileHeader + response.fileData;
-      this.fileHeader = response.fileHeader;
-      this.checkHeader();
+
+      // use response to construct blob
+      const contentType = response.fileHeader.match(/:(.+);/)[1];
+      const blob = base64StringToBlob(response.fileData, contentType);
+
+      // assign blob to URL
+      this.blobUrl = createObjectURL(blob);
+      var newDoc = document.createElement('iframe');
+      newDoc.src = this.blobUrl;
+      document.body.appendChild(newDoc);
+      this.imageExists = true;
+
     }, error => {
       console.log(error);
     })
-  }
-
-  checkHeader() {
-    if (this.fileHeader == "data:image/jpeg;base64,"){
-      this.imageExists = true;
-    }
   }
 
 }
