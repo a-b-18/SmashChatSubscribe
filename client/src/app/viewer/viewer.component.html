@@ -1,12 +1,11 @@
-<p>viewer works!</p>
-<h1>Your File List:</h1>
+<h1 style="display: flex; justify-content: center;">File Viewer</h1>
 <div class='parent grid-parent' style="  display: grid; grid-template-columns: 1fr 3fr;">
-  <div class='child'>
+  <div class='child card mb-4 box-shadow'>
     <div *ngFor="let file of fileList">
-      <button (click)="selectedFile = file; view();">{{ file }}</button>
+      <button (click)="selectedFile = file; view();" class="btn btn-primary">{{ file }}</button>
     </div>
   </div>
-  <div class='child'>
+  <div class='child card mb-4 box-shadow'>
     <iframe id="viewer"></iframe>
   </div>
 </div>
