@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
@@ -81,7 +79,7 @@ namespace API.Controllers
                 .Where(x => x.UploadedBy == doc.UploadedBy)
                 .FirstOrDefaultAsync(x => x.FileName == doc.FileName);
             
-            // Use below to download file
+            // Use below to download file to server
             // string fileLocation = "C:\\Users\\alexb\\Documents\\";
             // string fileName = readDb.FileName;
             // fileLocation = fileLocation + fileName;
