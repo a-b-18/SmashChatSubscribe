@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SecurityContext } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl, SafeUrl} from '@angular/platform-browser';
 import { AccountService } from '../_services/account.service';
 import { DocumentService } from '../_services/document.service';
 import { base64StringToBlob, createObjectURL } from 'blob-util';
 @Component({
   selector: 'app-viewer',
   templateUrl: './viewer.component.html',
-  styleUrls: ['./viewer.component.css']
+  styleUrls: ['./viewer.component.css'],
 })
 export class ViewerComponent implements OnInit {
   model: any = {};
@@ -16,9 +17,12 @@ export class ViewerComponent implements OnInit {
   viewModel: any = {};
   imageExists: boolean = false;
   userName: string = "";
-  blobUrl: string = "";
+  public viewUrl : SafeResourceUrl;
 
-  constructor(private documentService: DocumentService, public accountService: AccountService) { }
+  constructor(private documentService: DocumentService, public accountService: AccountService,
+    private sanitizer: DomSanitizer) {
+      this.sanitizer = sanitizer;
+     }
 
   ngOnInit(): void {
     this.userName = this.accountService.getCurrentUser();
@@ -51,11 +55,12 @@ export class ViewerComponent implements OnInit {
       const blob = base64StringToBlob(response.fileData, contentType);
 
       // assign blob to URL
-      this.blobUrl = createObjectURL(blob);
-      var newDoc = document.createElement('iframe');
-      newDoc.src = this.blobUrl;
-      document.body.appendChild(newDoc);
+      const obj_url = URL.createObjectURL(blob);
+      const iframe = document.getElementById('viewer');
+      iframe.setAttribute('src', obj_url);
+      URL.revokeObjectURL(obj_url);
       this.imageExists = true;
+
 
     }, error => {
       console.log(error);

@@ -1,6 +1,12 @@
 <p>viewer works!</p>
 <h1>Your File List:</h1>
-<div *ngFor="let file of fileList">
-  <button (click)="selectedFile = file; view();">{{ file }}</button>
+<div class='parent grid-parent' style="  display: grid; grid-template-columns: 1fr 3fr;">
+  <div class='child'>
+    <div *ngFor="let file of fileList">
+      <button (click)="selectedFile = file; view();">{{ file }}</button>
+    </div>
+  </div>
+  <div class='child'>
+    <iframe id="viewer"></iframe>
+  </div>
 </div>
-<iframe *ngIf="false" id="viewer" src="{{ this.blobUrl }}">
