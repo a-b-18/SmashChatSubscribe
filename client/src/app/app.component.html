@@ -6,4 +6,10 @@
 
 <div class="container" style="margin-top: 100px">
   <router-outlet></router-outlet>
+
+  <h1>When I go SKWAAR you Go?</h1>
+  <input type="text" [(ngModel)]="user_input" (ngModelChange)="setSkwar(user_input)">
+  <h1 *ngIf="skwar"><br>SKwaar, Skwaar skwarr, SKWAAAR</h1>
+  <p *ngIf="!skwar"><br><br>... no skWarr ...</p>
+
 </div>
